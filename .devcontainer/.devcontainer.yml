@@ -1,0 +1,30 @@
+# tasks:
+#   - name: aws-cli
+#     env:
+#       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#       AWS_DEFAULT_REGION: ap-south-1
+#     before:
+#       cd /workspaces
+#       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+#       unzip awscliv2.zip
+#       sudo ./aws/install
+#       aws sts get-caller-identity
+
+name: AWS CLI DevContainer
+
+build:
+  dockerfile: Dockerfile  # Optional: Only if you're using a custom Dockerfile, but you don't need one for this
+
+extensions:
+  - ms-azuretools.vscode-docker  # Optional: For Docker integration, you can add extensions you prefer
+
+postCreateCommand: |
+  # Install AWS CLI v2
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  unzip awscliv2.zip
+  sudo ./aws/install
+  rm -rf awscliv2.zip
+
+  # Verify installation
+  aws --version
